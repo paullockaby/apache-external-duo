@@ -21,6 +21,13 @@ class TestExternalCheck(unittest.TestCase):
                         "ikey": "asdf  ",
                         "skey": "  fdsa  ",
                         "host": " api-1234.example.com "
+                    },
+                    "cache": {
+                        "host": "foo.local"
+                    },
+                    "session": {
+                        "name": "foobar",
+                        "expiry": "10"
                     }
                 }""")
 
@@ -31,8 +38,15 @@ class TestExternalCheck(unittest.TestCase):
                 "duo": {
                     "ikey": "asdf",
                     "skey": "fdsa",
-                    "host": "api-1234.example.com"
-                }
+                    "host": "api-1234.example.com",
+                },
+                "cache": {
+                    "host": "foo.local",
+                },
+                "session": {
+                    "name": "foobar",
+                    "expiry": 10,
+                },
             })
 
     def test_missing_configuration(self):
