@@ -167,7 +167,7 @@ def main(configuration_file: str) -> int:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(prog="check-external")
+    parser = argparse.ArgumentParser(prog="check-duo")
     parser.add_argument(
         "--configuration-file",
         required=True,

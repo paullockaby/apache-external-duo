@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "external-duo"
+name = "apache-external-duo"
 version = "0.0.0"  # DO NOT CHANGE -- set during build
 description = "Verify credentials and call out to Duo."
 authors = ["Paul Lockaby <paul@paullockaby.com>"]

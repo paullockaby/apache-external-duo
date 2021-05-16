@@ -1,9 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="pytest" type="tests" factoryName="py.test" nameIsGenerated="true">
-    <module name="external-duo" />
+    <module name="apache-external-duo" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
-    <option name="SDK_HOME" value="$USER_HOME$/Library/Caches/pypoetry/virtualenvs/external-duo-dRBB8tEZ-py3.9/bin/python" />
     <option name="WORKING_DIRECTORY" value="" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />

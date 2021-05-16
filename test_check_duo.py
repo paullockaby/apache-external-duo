@@ -6,7 +6,7 @@ import unittest
 
 class TestExternalCheck(unittest.TestCase):
     def setUp(self) -> None:
-        self.checker = importlib.import_module("check-external")
+        self.checker = importlib.import_module("check-duo")
         self.load_configuration = self.checker.load_configuration
 
     def test_configuration(self):
