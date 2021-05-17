@@ -1,0 +1,1 @@
+www-data ALL=(root:root) NOPASSWD:SETENV:/usr/local/bin/check-duo

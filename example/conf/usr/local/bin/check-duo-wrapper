@@ -1,0 +1,2 @@
+#!/bin/sh
+exec sudo --preserve-env /usr/local/bin/check-duo "$@"
