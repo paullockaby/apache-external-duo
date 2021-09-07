@@ -83,7 +83,22 @@ def check_duo(username: str, configuration: dict) -> bool:
     auth = (ikey, sign(skey, "POST", host, path, now, data))
 
     r = requests.post("https://{}{}".format(host, path), headers=headers, data=data, auth=auth)
-    return r.status_code == 200
+    try:
+        data = r.json()
+    except json.JSONDecodeError as e:
+        print("unable to parse duo response: {}".format(e))
+        return False
+
+    if r.status_code != 200:
+        print("received {} from duo: {}, {}".format(r.status_code, data["message"], data["message_detail"]))
+        return False
+
+    response = data.get("response")
+    if response is None:
+        print("empty response from duo")
+        return False
+
+    return response.get("result", "deny") == "allow"
 
 
 def get_cookie(cookies: str, cookie_name: dict) -> Union[str, None]:
@@ -157,9 +172,9 @@ def main(configuration_file: str) -> int:
                     return 0
                 else:
                     print("second factor failed from {} for {}{}".format(ip_address, request_host, request_path))
-        else:
-            print("username or password did not match from {} for {}{}".format(ip_address, request_host, request_path))
+                    return 1
 
+        print("username or password did not match from {} for {}{}".format(ip_address, request_host, request_path))
         return 1
     except Exception as e:
         print("could not authenticate user: {}".format(e))
@@ -169,7 +184,7 @@ def main(configuration_file: str) -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="check-duo")
     parser.add_argument(
-        "--configuration-file",
+        "--configuration-file", "-c",
         required=True,
         action="store",
         metavar="FILE",
