@@ -10,11 +10,9 @@ have to build it into your programs. This tool utilizes these components:
 * [redis](https://redis.io)
 * [python](https://www.python.org)
 
-Because of implementation details this only works with Apache's form based
-authentication system using session cookies and not its regular "basic"
-authentication system. This tool also only works for one user. If you have more
-than one user you can start with this tool but you'll need to add your own code
-to support multiple users. Read on for how to get this thing going.
+This tool also only works for one user. If you have more than one user you can
+start with this tool but you'll need to add your own code to support multiple
+users. Read on for how to get this thing going.
 
 ## Configuring Duo
 
