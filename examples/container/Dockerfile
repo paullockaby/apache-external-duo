@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim@sha256:0ed82c5d1414eacc0e97fda5656ed03cc06ab91c26cdeb54388403e440599a60
+FROM debian:bullseye-slim@sha256:cfadaa70a452076a478dcfcf2da3a3dc3b741450afed5ab67a7f3df161387c48
 
 # first install apache
 ENV DEBIAN_FRONTEND=noninteractive
