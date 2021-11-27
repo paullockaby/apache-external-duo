@@ -71,7 +71,7 @@ def sign(skey: str, method: str, host: str, path: str, date: str, params: dict):
     return sig.hexdigest()
 
 
-def check_duo(username: str, configuration: dict) -> bool:
+def check_duo(username: str, ip_address: str, configuration: dict) -> bool:
     ikey = configuration["ikey"]
     skey = configuration["skey"]
     host = configuration["host"]
@@ -79,7 +79,13 @@ def check_duo(username: str, configuration: dict) -> bool:
     now = datetime.utcnow().strftime("%a, %d %b %Y %H:%M:%S -0000")
     path = "/auth/v2/auth"
     headers = {"Date": now}
-    data = {"username": username, "factor": "auto", "device": "auto"}
+    data = {
+        "username": username,
+        "factor": "auto",
+        "device": "auto",
+        "ipaddr": ip_address,
+        "pushinfo": f"IP={ip_address}"
+    }
     auth = (ikey, sign(skey, "POST", host, path, now, data))
 
     r = requests.post("https://{}{}".format(host, path), headers=headers, data=data, auth=auth)
@@ -121,11 +127,11 @@ def main(configuration_file: str) -> int:
         username = sys.stdin.readline().strip()
         password = sys.stdin.readline().strip()
 
-        ip_address = os.environ.get("IP", "").strip()
-        request_host = os.environ.get("HTTP_HOST", "").strip()
-        request_path = os.environ.get("URI", "").strip()
-        context = os.environ.get("CONTEXT", "").strip()
-        cookies = os.environ.get("COOKIE", "").strip()
+        environment = dict(os.environ)
+        ip_address = environment.pop("IP", "").strip()
+        request_host = environment.pop("HTTP_HOST", "").strip()
+        request_path = environment.pop("URI", "").strip()
+        context = environment.pop("CONTEXT", "").strip()
 
         if username == "":
             print("user provided no username from {} for {}{}".format(ip_address, request_host, request_path))
@@ -141,10 +147,9 @@ def main(configuration_file: str) -> int:
             if context == "login":
                 return 0
 
-            # if the context is NOT "login" then they are NOT logging in for
-            # the first time so we need to check to see if they have passed
-            # through duo.
-            cookie = get_cookie(cookies, configuration["session"]["name"])
+            # the session shouldn't ever change. if it does then make the user
+            # go back to duo to reauthenticate.
+            cookie = hashlib.md5(json.dumps(dict(os.environ)).encode("utf-8")).hexdigest()
             if cookie is None:
                 return 1  # no cookie, no login
 
@@ -161,7 +166,7 @@ def main(configuration_file: str) -> int:
                 # send the user to duo and if they succeed then save it but
                 # with an expiration so that they have to reauthenticate after
                 # some configurable period of time.
-                duo_success = check_duo(username, configuration["duo"])
+                duo_success = check_duo(username, ip_address, configuration["duo"])
                 if duo_success:
                     print("{} successfully passed second factor from {} for {}{}".format(username, ip_address, request_host, request_path))
                     redis.set(key, json.dumps({

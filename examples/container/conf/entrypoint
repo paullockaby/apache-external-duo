@@ -7,5 +7,8 @@ export APACHE_RUN_USER=www-data
 export APACHE_RUN_GROUP=www-data
 export APACHE_LOG_DIR=/var/log/apache2
 
+# these should be set by the caller but in case they are not
+export HTTPD_SERVER_NAME=${HTTPD_SERVER_NAME-localhost}
+
 mkdir -p /var/run/apache2
 exec /usr/sbin/apache2 -DFOREGROUND
