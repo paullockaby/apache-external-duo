@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim@sha256:cfadaa70a452076a478dcfcf2da3a3dc3b741450afed5ab67a7f3df161387c48
+FROM debian:bullseye-slim@sha256:a23887a2e830b815955e010f30d4c2430cd5ef82e93c130471024bc9f808d5d3
 
 # first install apache
 ENV DEBIAN_FRONTEND=noninteractive
@@ -14,7 +14,7 @@ RUN a2dismod autoindex access_compat status -f \
  && a2disconf security serve-cgi-bin other-vhosts-access-log -f \
  && a2enmod \
       remoteip headers rewrite deflate authnz_external \
-      auth_form session session_cookie request \
+      auth_form session session_cookie session_crypto request \
  && sed -i '/^ErrorLog/d' /etc/apache2/apache2.conf \
  && rm -rf /var/www/html
 

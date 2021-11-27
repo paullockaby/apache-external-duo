@@ -127,11 +127,11 @@ def main(configuration_file: str) -> int:
         username = sys.stdin.readline().strip()
         password = sys.stdin.readline().strip()
 
-        environment = dict(os.environ)
-        ip_address = environment.pop("IP", "").strip()
-        request_host = environment.pop("HTTP_HOST", "").strip()
-        request_path = environment.pop("URI", "").strip()
-        context = environment.pop("CONTEXT", "").strip()
+        ip_address = os.environ.get("IP", "").strip()
+        request_host = os.environ.get("HTTP_HOST", "").strip()
+        request_path = os.environ.get("URI", "").strip()
+        context = os.environ.get("CONTEXT", "").strip()
+        cookies = os.environ.get("COOKIE", "").strip()
 
         if username == "":
             print("user provided no username from {} for {}{}".format(ip_address, request_host, request_path))
@@ -147,9 +147,10 @@ def main(configuration_file: str) -> int:
             if context == "login":
                 return 0
 
-            # the session shouldn't ever change. if it does then make the user
-            # go back to duo to reauthenticate.
-            cookie = hashlib.md5(json.dumps(dict(os.environ)).encode("utf-8")).hexdigest()
+            # if the context is NOT "login" then they are NOT logging in for
+            # the first time so we need to check to see if they have passed
+            # through duo.
+            cookie = get_cookie(cookies, configuration["session"]["name"])
             if cookie is None:
                 return 1  # no cookie, no login
 

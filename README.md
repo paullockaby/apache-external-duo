@@ -6,14 +6,18 @@ tool utilizes these components:
 * [mod_auth_external](https://github.com/phokz/mod-auth-external)
 * [mod_session](https://httpd.apache.org/docs/2.4/mod/mod_session.html)
 * [mod_session_cookie](https://httpd.apache.org/docs/2.4/mod/mod_session_cookie.html)
+* [mod_session_crypto](https://httpd.apache.org/docs/2.4/mod/mod_session_crypto.html)
 * [redis](https://redis.io)
 * [python](https://www.python.org)
 
 Because of implementation details -- specifically that we need a session cookie to keep from slamming Duo too often --
 this only works with Apache's form based authentication system using session cookies and not its regular "basic"
 authentication system. This tool also only works for one user. If you have more than one user you can start with this
-tool but you'll need to add your own code to support multiple users. Read on for how to get this thing going.
- 
+tool but you will need to add your own code to support multiple users. Read on for how to get this thing going.
+
+Finally, you will need to be using a more recent version of Apache. Apache 2.4 on Buster does not work but Apache 2.4
+on Bullseye does work.
+
 ## Configuring Duo
 
 Before you can use this you must have a Duo account. You should create an application using what is currently called
@@ -25,11 +29,11 @@ control panel.
 
 ## Creating The Configuration Files
 
-There is one configuration file that will contain secret information. You should create this file and put it in a
-location on your server that is relatively protected and ensure that it is owned by root and readable only by root. **DO
-NOT PUT IT INTO A CONTAINER.** Mount it into the container. This file contains the keys to the kingdom.
+There are two configuration files that will contain secret information. You should create these files and put them in a
+location on your server that is relatively protected and ensure that they are owned by root and readable only by root.
+**DO NOT PUT THESE FILES INTO A CONTAINER.** Mount them into the container. These file contain the keys to the kingdom.
 
-The configuration file should be called `auth-configuration.json` and look like this:
+The first configuration file should be called `auth-configuration.json` and look like this:
 
 ```json
 {
@@ -60,7 +64,13 @@ library so put whatever works with that in here.
 * Configures some session details. The `name` must match the cookie that your session uses which is configured in your
 Apache. The `expiry` is how often, in seconds, you must reauthenticate with Duo.
 
-Again, place this file somewhere on your server and ensure that it is owned by root and readable only by root.
+The second file should contain random text and you can fill it by running something like this:
+
+```
+openssl rand -base64 42 > session-secret.txt
+```
+
+Again, place these files somewhere on your server and ensure that they are owned by root and readable only by root.
 
 ## Running The Example
 
@@ -78,12 +88,13 @@ front of your web server and it will encrypt everything. This example _will_ sen
 You can use the example like this:
 
 1. Create a place for all of your secrets: `mkdir private`
-2. Create a configuration file from the example above: `vi private/auth-configuration.json`
-3. Create a network to communicate: `docker network create duo`
-4. Start up redis: `docker run -d --network duo --name redis redis:latest`
-5. Build your container: `docker build -t test .`
-6. Start up your container: `docker run --network duo -e HTTPD_SERVER_NAME=localhost:8080 -p 8080:80 -v $PWD/private:/etc/private test`
-7. Visit http://localhost:8080/private and log in!
+2. Create a session secret file: `openssl rand -base64 42 > private/session-secret.txt`
+3. Create a configuration file from the example above: `vi private/auth-configuration.json`
+4. Create a network to communicate: `docker network create duo`
+5. Start up redis: `docker run -d --network duo --name redis redis:latest`
+6. Build your container: `docker build -t test .`
+7. Start up your container: `docker run --network duo -e HTTPD_SERVER_NAME=localhost:8080 -p 8080:80 -v $PWD/private:/etc/private test`
+8. Visit http://localhost:8080/private and log in!
 
 ## How Does It Work?
 
