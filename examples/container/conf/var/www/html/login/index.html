@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Required</title>
+  </head>
+  <body>
+
+    <form method="POST" action="/whoami/submit">
+      <h1>Login Required</h1>
+
+      <div>
+        <input type="text" spellcheck="false" autocapitalize="off" autocorrect="off" id="floatingInput" placeholder="Username" name="httpd_username">
+        <label for="floatingInput">Username</label>
+      </div>
+      <div>
+        <input type="password" id="floatingPassword" placeholder="Password" name="httpd_password">
+        <label for="floatingPassword">Password</label>
+      </div>
+
+      <button type="submit">Sign in</button>
+    </form>
+
+  </body>
+</html>
