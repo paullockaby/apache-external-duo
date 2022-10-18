@@ -229,6 +229,6 @@ if __name__ == "__main__":
 
     try:
         sys.exit(main(**vars(args)))
-    except Exception as exc:  # noqa W703
+    except Exception as exc:
         print(f"could not authenticate user: {exc}")
         sys.exit(1)
