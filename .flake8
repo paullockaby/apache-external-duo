@@ -2,6 +2,7 @@
 inline-quotes = double
 ignore =
     E501
+    W503
     PLC0103
     PLC0111
     PLC0112
@@ -10,8 +11,9 @@ ignore =
     PLC0116
     PLC0301
     PLR0911
+    PLE0401
 per-file-ignores =
-    test_*:S101,B011,ANN
+    tests/*:S101,B011,ANN
 exclude =
     .git
     .github

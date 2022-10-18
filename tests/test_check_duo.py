@@ -11,22 +11,26 @@ def test_configuration() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                },
-                "cache": {
-                    "host": "foo.local"
-                },
-                "session": {
-                    "name": "foobar",
-                    "expiry": "10"
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        },
+                        "cache": {
+                            "host": "foo.local"
+                        },
+                        "session": {
+                            "name": "foobar",
+                            "expiry": "10"
+                        }
+                    }
+                """,
+            )
 
         configuration = checker.load_configuration(configuration_path)
         assert configuration == {
@@ -59,15 +63,19 @@ def test_invalid_configuration() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com ",
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com ",
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -78,42 +86,54 @@ def test_missing_username() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "password": " bazbat ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "password": " bazbat ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": null,
-                "password": " bazbat ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": null,
+                        "password": " bazbat ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": "",
-                "password": " bazbat ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": "",
+                        "password": " bazbat ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -124,42 +144,54 @@ def test_missing_password() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": null,
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": null,
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": "",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": "",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -170,40 +202,56 @@ def test_missing_duo() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-                "duo": null
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                        "duo": null
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-                "duo": {}
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                        "duo": {}
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " bazbat ",
-                "duo": ""
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " bazbat ",
+                        "duo": ""
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -214,42 +262,54 @@ def test_missing_ikey() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": null,
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": null,
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "",
-                    "skey": "  fdsa  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "",
+                            "skey": "  fdsa  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -260,42 +320,54 @@ def test_missing_skey() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": null,
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": null,
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "",
-                    "host": " api-1234.example.com "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "",
+                            "host": " api-1234.example.com "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
@@ -306,42 +378,54 @@ def test_missing_host() -> None:
         configuration_path = os.path.join(t, "configuration.json")
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  "
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  "
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": null
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": null
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
-            f.write("""{
-                "username": " foobar ",
-                "password": " fdskal ",
-                "duo": {
-                    "ikey": "asdf  ",
-                    "skey": "  fdsa  ",
-                    "host": ""
-                }
-            }""")
+            f.write(
+                """
+                    {
+                        "username": " foobar ",
+                        "password": " fdskal ",
+                        "duo": {
+                            "ikey": "asdf  ",
+                            "skey": "  fdsa  ",
+                            "host": ""
+                        }
+                    }
+                """,
+            )
 
         with pytest.raises(checker.ConfigurationError):
             checker.load_configuration(configuration_path)
