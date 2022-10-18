@@ -28,26 +28,19 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-#      - name: setup poetry and pre-commit
-#        run: |
-#          pip install poetry
-#
-#      - name: setup application
-#        run: |
-#          poetry config virtualenvs.in-project true
-#          poetry install --no-interaction
-#
-#      - name: run tests
-#        run: |
-#          poetry run pytest --mypy
-#
-#      - name: run linter
-#        run: |
-#          poetry run pre-commit run flake8 --all-files
+      - name: setup poetry and pre-commit
+        run: |
+          pip install poetry
+
+      - name: setup application
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install --no-interaction
 
       - name: run tests
         run: |
-          pip install poetry
-          poetry install --no-interaction
           poetry run pytest --mypy
+
+      - name: run linter
+        run: |
           poetry run pre-commit run flake8 --all-files
