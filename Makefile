@@ -22,7 +22,5 @@ pre-commit: install
 
 .PHONY: clean
 clean:
-	rm -rf dist/
-	rm -rf .pytest_cache/
-	rm -rf .mypy_cache
+	rm -rf dist/ .pytest_cache/ .mypy_cache/ .coverage htmlcov/
 	find . -type d -name "__pycache__" -print0 | xargs -0 rm -rf

@@ -1,9 +1,9 @@
 [tool.poetry]
-name = "checker"
+name = "checkduo"
 version = "0.0.0"  # DO NOT CHANGE
 description = "Verify credentials and call out to Duo."
 authors = ["Paul Lockaby <paul@paullockaby.com>"]
-packages = [{include = "checker", from = "src"}]
+packages = [{include = "checkduo", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

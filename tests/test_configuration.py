@@ -3,7 +3,7 @@ import tempfile
 
 import pytest
 
-from checker import duo as checker
+from checkduo import checkduo
 
 
 def test_configuration() -> None:
@@ -32,7 +32,7 @@ def test_configuration() -> None:
                 """,
             )
 
-        configuration = checker.load_configuration(configuration_path)
+        configuration = checkduo.load_configuration(configuration_path)
         assert configuration == {
             "username": "foobar",
             "password": "bazbat",
@@ -54,8 +54,8 @@ def test_configuration() -> None:
 def test_missing_configuration() -> None:
     with tempfile.TemporaryDirectory() as t:
         configuration_path = os.path.join(t, "configuration.json")
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_invalid_configuration() -> None:
@@ -77,8 +77,8 @@ def test_invalid_configuration() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_username() -> None:
@@ -99,8 +99,8 @@ def test_missing_username() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -117,8 +117,8 @@ def test_missing_username() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -135,8 +135,8 @@ def test_missing_username() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_password() -> None:
@@ -157,8 +157,8 @@ def test_missing_password() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -175,8 +175,8 @@ def test_missing_password() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -193,8 +193,8 @@ def test_missing_password() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_duo() -> None:
@@ -211,8 +211,8 @@ def test_missing_duo() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -225,8 +225,8 @@ def test_missing_duo() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -239,8 +239,8 @@ def test_missing_duo() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -253,8 +253,8 @@ def test_missing_duo() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_ikey() -> None:
@@ -275,8 +275,8 @@ def test_missing_ikey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -293,8 +293,8 @@ def test_missing_ikey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -311,8 +311,8 @@ def test_missing_ikey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_skey() -> None:
@@ -333,8 +333,8 @@ def test_missing_skey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -351,8 +351,8 @@ def test_missing_skey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -369,8 +369,8 @@ def test_missing_skey() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 def test_missing_host() -> None:
@@ -391,8 +391,8 @@ def test_missing_host() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -409,8 +409,8 @@ def test_missing_host() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
         with open(configuration_path, "wt", encoding="utf8") as f:
             f.write(
@@ -427,13 +427,13 @@ def test_missing_host() -> None:
                 """,
             )
 
-        with pytest.raises(checker.ConfigurationError):
-            checker.load_configuration(configuration_path)
+        with pytest.raises(checkduo.ConfigurationError):
+            checkduo.load_configuration(configuration_path)
 
 
 @pytest.mark.skip("not running tests against the duo api")
 def test_duo_push() -> None:
-    assert checker.check_duo(
+    assert checkduo.check_duo(
         username="paul",
         ip_address="127.0.0.1",
         configuration={
