@@ -7,9 +7,9 @@ repos:
       - id: check-ast
       - id: check-case-conflict
       - id: trailing-whitespace
-        exclude: "(^.idea/|^docs/)"
+        exclude: "^.idea/"
       - id: end-of-file-fixer
-        exclude: "(^.idea/|^docs/)"
+        exclude: "^.idea/"
 
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
