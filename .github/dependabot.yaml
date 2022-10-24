@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
@@ -12,3 +12,4 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    versioning-strategy: increase-if-necessary
