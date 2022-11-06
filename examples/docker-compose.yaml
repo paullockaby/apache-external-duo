@@ -1,0 +1,22 @@
+version: "3.0"
+
+services:
+  httpd:
+    build: .
+    image: example
+    networks:
+      - example
+    ports:
+      - 8080:80/tcp
+    environment:
+      - HTTPD_SERVER_NAME=localhost:8080
+    volumes:
+      - ./private:/etc/private
+  redis:
+    image: redis:latest
+    networks:
+      - example
+
+networks:
+  example:
+    driver: bridge

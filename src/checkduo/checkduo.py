@@ -11,9 +11,10 @@ import urllib.parse
 from datetime import datetime
 from http.cookies import SimpleCookie
 
+import bcrypt
 import requests
 from redis import Redis
-from schema import And, Optional, Schema, SchemaError, Use  # type: ignore
+from schema import And, Optional, Or, Schema, SchemaError, Use  # type: ignore
 
 
 class ConfigurationError(Exception):
@@ -31,8 +32,10 @@ def load_configuration(configuration_file: str) -> dict:
 
     schema = Schema(
         {
-            "username": And(str, Use(str.strip), len),
-            "password": And(str, Use(str.strip), len),
+            "usernames": Or(
+                {},
+                {And(str, Use(str.strip), len): Or(And(str, Use(str.strip)), None)},
+            ),
             "duo": {
                 "ikey": And(str, Use(str.strip), len),
                 "skey": And(str, Use(str.strip), len),
@@ -130,6 +133,54 @@ def get_cookie(cookies: str, cookie_name: str) -> typing.Optional[str]:
     return parsed_cookies[cookie_name].value
 
 
+def is_valid_password(
+    usernames: dict,
+    username: str,
+    password: str,
+    ip_address: str,
+    request: str,
+) -> bool:
+    if username == "":
+        print(
+            f"user provided no username from {ip_address} for {request}",
+        )
+        return False
+
+    if password == "":  # noqa S105
+        print(
+            f"user provided no password from {ip_address} for {request}",
+        )
+        return False
+
+    # see if the username is in the usernames dict
+    if username not in usernames:
+        print(
+            f"username '{username}' not found in configuration from {ip_address} for {request}",
+        )
+        return False
+
+    # see if the username has a password
+    valid_password = usernames[username]
+    if not valid_password:
+        print(
+            f"username '{username}' does not have a configured password from {ip_address} for {request}",
+        )
+        return False
+
+    # check the password against what was provided
+    if not bcrypt.checkpw(bytes(password, "utf-8"), bytes(valid_password, "utf-8")):
+        print(
+            f"username '{username}' password did not match from {ip_address} for {request}",
+        )
+        return False
+
+    # username and password are valid
+    print(
+        f"{username} successfully passed first factor from {ip_address} for {request}",
+    )
+    return True
+
+
 def main(configuration_file: str) -> int:
     configuration = load_configuration(configuration_file)
 
@@ -144,29 +195,14 @@ def main(configuration_file: str) -> int:
     context = os.environ.get("CONTEXT", "").strip()
     cookies = os.environ.get("COOKIE", "").strip()
 
-    if username == "":
-        print(
-            f"user provided no username from {ip_address} for {request_host}{request_path}",
-        )
-        return 1
-    if password == "":  # noqa S105
-        print(
-            f"user provided no password from {ip_address} for {request_host}{request_path}",
-        )
-        return 1
-
-    if not (
-        username == configuration["username"] and password == configuration["password"]
+    if not is_valid_password(
+        configuration["usernames"],
+        username,
+        password,
+        ip_address,
+        f"{request_host}{request_path}",
     ):
-        print(
-            f"username or password did not match from {ip_address} for {request_host}{request_path}",
-        )
         return 1
-
-    # username and password are valid
-    print(
-        f"{username} successfully passed first factor from {ip_address} for {request_host}{request_path}",
-    )
 
     # if they are logging in for the first time then we're good here
     if context == "login":
