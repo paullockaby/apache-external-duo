@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
       apache2 apache2-utils \
-      libapache2-mod-authnz-external python3 python3-requests python3-redis python3-schema sudo \
+      libapache2-mod-authnz-external python3 python3-requests python3-redis python3-schema python3-bcrypt sudo \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
