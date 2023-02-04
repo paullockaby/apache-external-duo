@@ -62,7 +62,7 @@ def load_configuration(configuration_file: str) -> dict:
 
 def sign(skey: str, host: str, path: str, date: str, params: dict) -> str:
     canonical_params = []
-    for (key, value) in sorted(
+    for key, value in sorted(
         (urllib.parse.quote(key, "~"), urllib.parse.quote(value, "~"))
         for (key, value) in list(params.items())
     ):
