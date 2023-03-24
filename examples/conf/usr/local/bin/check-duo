@@ -101,6 +101,7 @@ def check_duo(username: str, ip_address: str, configuration: dict) -> bool:
         headers=request_headers,
         data=request_data,
         auth=(ikey, sign(skey, host, request_path, now, request_data)),
+        timeout=5,
     )
     try:
         data = r.json()
