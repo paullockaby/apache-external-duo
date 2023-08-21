@@ -9,7 +9,7 @@ packages = [{include = "checkduo", from = "src"}]
 python = "^3.9"
 requests = "^2.31.0"
 schema = "^0.7.5"
-redis = "^4.6.0"
+redis = "^5.0.0"
 bcrypt = "^4.0.1"
 
 [tool.poetry.group.dev.dependencies]
